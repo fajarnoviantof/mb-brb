@@ -1,7 +1,7 @@
 -- =====================================================================
 -- SEED DATA: Master Item + Harga (hasil ekstrak dari DATA VALIDASI)
 -- Digabung jadi satu list lookup (tidak dipisah per brand/kategori)
--- sesuai arahan user -- kategori cuma label sumber, bukan filter wajib.
+-- Nama yang aslinya duplikat sudah diberi kode di belakang biar unik.
 -- =====================================================================
 
 insert into master_item (kode_item, nama_item, satuan, harga_satuan, sumber_list) values
@@ -37,13 +37,13 @@ insert into master_item (kode_item, nama_item, satuan, harga_satuan, sumber_list
   (NULL, 'PP', 'gram', 534.37, 'item_cat'),
   (NULL, 'THIN - SLOW', 'gram', 136.91, 'item_cat'),
   (NULL, 'THIN - MED', 'gram', 132.66, 'item_cat'),
-  (NULL, 'PUTTY', 'gram', 200085.79, 'item_cat'),
+  (NULL, 'PUTTY', 'pcs', 200085.79, 'item_cat'),
   (NULL, 'DEGREASER', 'gram', 358869.47, 'item_cat'),
   ('CA010', 'STABILIZER', 'gram', 306, 'item_warna'),
   ('CA020', 'ALUMINUM CONTROLLER', 'gram', 257, 'item_warna'),
   ('CA030', 'FLIP - FLOP CONTROLLER', 'gram', 325, 'item_warna'),
   ('CA110', 'OLIVE', 'gram', 699.9, 'item_warna'),
-  ('CA135', 'BRIGHT YELLOW', 'gram', 517, 'item_warna'),
+  ('CA135', 'BRIGHT YELLOW (CA135)', 'gram', 517, 'item_warna'),
   ('CA154', 'AMBER', 'gram', 399.1, 'item_warna'),
   ('CA190', 'TRANSPARENT OXIDE YELLOW', 'gram', 356, 'item_warna'),
   ('CA198', 'OXIDE YELLOW', 'gram', 306, 'item_warna'),
@@ -98,10 +98,10 @@ insert into master_item (kode_item, nama_item, satuan, harga_satuan, sumber_list
   ('CA895', 'WHITE PEARL', 'gram', 446, 'item_warna'),
   ('CA896', 'IVORY PEARL', 'gram', 446, 'item_warna'),
   ('CA898', 'SPARKLING WHITE PEARL', 'gram', 828, 'item_warna'),
-  ('CA910', 'WHITE', 'gram', 270, 'item_warna'),
+  ('CA910', 'WHITE (CA910)', 'gram', 270, 'item_warna'),
   ('CA940', 'FINE WHITE', 'gram', 471.8, 'item_warna'),
   ('CA960', 'BLACK', 'gram', 356, 'item_warna'),
-  ('CA980', 'DEEP BLACK', 'gram', 359, 'item_warna'),
+  ('CA980', 'DEEP BLACK (CA980)', 'gram', 359, 'item_warna'),
   ('CA277', 'CRYSTAL WHITE SZ', 'gram', 828, 'item_warna'),
   ('Q065', 'CONNECTOR', 'gram', 418.22, 'item_warna'),
   ('Q190', 'WHITE GREY TRANSPARENT', 'gram', 395.96, 'item_warna'),
@@ -118,8 +118,8 @@ insert into master_item (kode_item, nama_item, satuan, harga_satuan, sumber_list
   ('Q671', 'BLUE TRANSPARENT', 'gram', 555.79, 'item_warna'),
   ('Q673', 'BRIGHT BLUE TRANSPARENT', 'gram', 551.26, 'item_warna'),
   ('Q766', 'VIOLET BLUE TRANSPARENT', 'gram', 562.74, 'item_warna'),
-  ('Q110', 'WHITE', 'gram', 472.17, 'item_warna'),
-  ('Q140', 'DEEP BLACK', 'gram', 554.52, 'item_warna'),
+  ('Q110', 'WHITE (Q110)', 'gram', 472.17, 'item_warna'),
+  ('Q140', 'DEEP BLACK (Q140)', 'gram', 554.52, 'item_warna'),
   ('Q811B', 'METALIC EXTRA FINE', 'gram', 589.09, 'item_warna'),
   ('Q811R', 'METALIC VERY COARSE', 'gram', 584.3, 'item_warna'),
   ('Q811E', 'METALIC FINE', 'gram', 578.08, 'item_warna'),
@@ -153,14 +153,14 @@ insert into master_item (kode_item, nama_item, satuan, harga_satuan, sumber_list
   ('Q325', 'DARK ORANGE', 'gram', 1042.23, 'item_warna'),
   ('Q348', 'ORANGE YELLOW', 'gram', 1027.16, 'item_warna'),
   ('Q452', 'LIGHT YELLOW', 'gram', 1057.76, 'item_warna'),
-  ('Q455', 'BRIGHT YELLOW', 'gram', 965.5, 'item_warna'),
-  ('Q725', 'RED MAROON TRANSPARENT', 'gram', 1084.59, 'item_warna'),
+  ('Q455', 'BRIGHT YELLOW (Q455)', 'gram', 965.5, 'item_warna'),
+  ('Q725', 'RED MAROON TRANSPARENT (Q725)', 'gram', 1084.59, 'item_warna'),
   ('Q726', 'VIOLET RED TRANSPARENT', 'gram', 1080.19, 'item_warna'),
   ('Q843H', 'YELLOW GOLD METALIC, MEDIUM', 'gram', 1085.7, 'item_warna'),
   ('Q432', 'YELLOW TRANSPARENT (NEW PRODUCT)', 'gram', 1556.84, 'item_warna'),
   ('Q231', 'BRILIANT RED', 'gram', 1290.95, 'item_warna'),
   ('Q235', 'BRILIANT RED ORANGE TRANSPARENT', 'gram', 1280.96, 'item_warna'),
-  ('Q271', 'RED MAROON TRANSPARENT', 'gram', 1084.59, 'item_warna'),
+  ('Q271', 'RED MAROON TRANSPARENT (Q271)', 'gram', 1084.59, 'item_warna'),
   ('Q941H', 'XIRALIC GOLD', 'gram', 1235.51, 'item_warna'),
   ('Q439', 'YELLOW ORANGE TRANSPARENT', 'gram', 1319.39, 'item_warna'),
   ('Q911H', 'XIRALIC SILVER', 'gram', 1396.18, 'item_warna'),
