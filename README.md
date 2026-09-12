@@ -5,8 +5,46 @@ wogrup`, `MX`, `CR`, dst.) yang berat/lemot, dengan aplikasi web + database
 ringan (Supabase/Postgres) yang update-nya real-time.
 
 ## Status
-🚧 **Skeleton awal.** Struktur database & 3 halaman inti sudah ada, tapi
-BELUM siap produksi — lihat "Yang masih perlu dikerjakan" di bawah.
+🚧 **Mulai dari 0 dulu, asal jalan.** Keputusan yang disepakati:
+- Sistem dibangun mulai dari nol (bukan migrasi penuh data lama).
+- **Migrasi histori** dari sheet `mx kansai`, `mx sikkens`, `MX NON PAINT`
+  akan menyusul SETELAH sistem baru ini jalan & stabil — bukan syarat mulai.
+- Sinkron otomatis dari sheet CR **belum dibuat**; sementara dipakai form
+  input manual singkat di halaman Input kalau No WO belum ada di arsip
+  (lihat `showManualWo` di `src/pages/input.js`), supaya tetap bisa langsung
+  dipakai sambil sinkron CR dikerjakan menyusul.
+- Satuan: **semua item dianggap gram**, kecuali dempul/putty pakai **pcs**
+  (murni label tampilan, tidak ada konversi apapun di belakangnya).
+
+## Cara Upload ke GitHub (saya belum bisa push otomatis dari sini)
+Saya tidak punya akses langsung ke akun GitHub Anda, jadi silakan ikuti salah
+satu cara ini:
+
+**Cara A — paling gampang, lewat browser (tanpa install apa-apa):**
+1. Login ke https://github.com, klik **New repository** → beri nama misal
+   `dashboard-pemakaian-cat` → pilih Private atau Public → Create.
+2. Di halaman repo kosong, klik **"uploading an existing file"**.
+3. Extract file zip yang saya kirim, lalu drag semua isinya (folder
+   `src`, `supabase`, `docs`, `package.json`, `README.md`, dst) ke halaman
+   upload tsb.
+4. Klik **Commit changes**. Selesai — repo Anda sudah terisi.
+
+**Cara B — lewat terminal (kalau sudah biasa pakai git):**
+```bash
+cd dashboard-pemakaian-cat
+git init
+git add .
+git commit -m "Skeleton awal dashboard pemakaian cat"
+git branch -M main
+git remote add origin https://github.com/USERNAME/dashboard-pemakaian-cat.git
+git push -u origin main
+```
+
+Setelah repo ada di GitHub, langkah berikutnya (deploy ke Vercel supaya bisa
+diakses lewat link) tinggal: buka https://vercel.com → Import dari GitHub →
+pilih repo ini → isi Environment Variables (`NEXT_PUBLIC_SUPABASE_URL`,
+`NEXT_PUBLIC_SUPABASE_ANON_KEY`) → Deploy. Kalau sudah sampai tahap ini dan
+ada kendala, kabari saya, saya bantu troubleshoot langkah demi langkah.
 
 ## 3 Menu
 1. **`/input`** — pilih/ketik No WO → tampil data kendaraan & riwayat item yang
@@ -37,16 +75,18 @@ BELUM siap produksi — lihat "Yang masih perlu dikerjakan" di bawah.
 ## Yang masih perlu dikerjakan (belum ada di skeleton ini)
 - [ ] **Sinkronisasi CR otomatis**: fungsi untuk menarik data terbaru dari
   Google Sheet CR (via Google Sheets API) ke tabel `wo_master`, dijalankan
-  terjadwal (misal tiap 15 menit) atau saat No WO baru dicari di menu Input.
-- [ ] **Import data master** `master_item` dari sheet `DATA VALIDASI` & `PL`
-  (harga tiap item per kategori) — perlu file CSV/export dari Anda.
-- [ ] **Import histori** dari `mx kansai`, `mx sikkens`, dan `MX NON PAINT` ke
-  tabel `pemakaian` (supaya data lama tidak hilang saat migrasi).
+  terjadwal atau saat No WO baru dicari di menu Input. **Sementara pakai
+  form manual** di halaman Input.
+- [ ] **Isi data master** `master_item` (nama item + harga per kategori) —
+  untuk mulai dari 0, bisa diisi manual sedikit-sedikit lewat Supabase Table
+  Editor dulu, tidak harus tunggu import besar.
+- [ ] **Migrasi histori** dari `mx kansai`, `mx sikkens`, `MX NON PAINT` ke
+  tabel `pemakaian` — **menyusul, bukan syarat mulai** (sesuai kesepakatan).
 - [ ] **Autentikasi & role** — saat ini tabel `app_users` baru kerangka;
   perlu dipasangkan ke Supabase Auth (login pakai kode akses/PIN atau
   email+password) dan proteksi halaman per role (`admin` vs `input_view`).
-- [ ] **Konfirmasi rumus bisnis** — lihat `docs/RUMUS-BISNIS.md`, ada
-  beberapa persen (35%, 40%, 15%, 85%) yang perlu dipastikan ke Anda.
+- [ ] **Konfirmasi rumus bisnis sisa** — lihat `docs/RUMUS-BISNIS.md` poin
+  1-4 (persen 35%/40%/15%/85%), poin 5 (satuan gram/pcs) sudah selesai.
 - [ ] **Export PDF** untuk data pemakaian — nunggu rule perhitungan output
   final.
 - [ ] Styling/UI — skeleton ini masih tabel HTML polos, belum didesain.

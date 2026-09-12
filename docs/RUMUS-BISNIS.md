@@ -45,15 +45,11 @@ opl-bahan grup? angka 0.75, 10, 0.85 mewakili apa?).
 
 **Pertanyaan:** boleh dijelaskan maksud formula ini dipakai untuk laporan apa?
 
-## 5. Gram material (primer/surfacer/cat/clear/thinner)
-Di sheet `data pemakaian v1` ada perhitungan "gram primer", "gram surfacer",
-dst — sepertinya konversi dari satuan pembelian (kg/liter) ke gram terpakai
-per WO, tapi formula konversinya memakai XLOOKUP ke tabel referensi yang
-belum saya temukan sumber angkanya secara eksplisit.
-
-**Pertanyaan:** apakah konversi ke gram ini masih dipakai/dibutuhkan di
-dashboard baru, atau cukup sampai satuan "Quantity" yang diinput apa adanya
-(sesuai satuan asli tiap item)?
+## 5. Gram material (primer/surfacer/cat/clear/thinner) — ✅ SUDAH DIKONFIRMASI
+Konversi gram dari sheet lama **tidak dipakai** di dashboard baru. Keputusan:
+- Semua item **default satuan gram**, quantity diinput apa adanya (tanpa konversi).
+- **Kecuali kategori dempul/putty** → satuannya **pcs**.
+- Kolom `satuan` sudah ditambahkan ke tabel `master_item` (lihat `schema.sql`).
 
 ---
 Setelah poin-poin di atas dikonfirmasi, saya akan update `schema.sql` (view

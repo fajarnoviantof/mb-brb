@@ -63,16 +63,21 @@ create type kategori_item as enum (
   'panel_repair', 'putty_sfr', 'masking', 'spraying', 'poles', 'reassy'
 );
 
+create type satuan_item as enum ('gram', 'pcs');
+
 create table master_item (
   id           uuid primary key default gen_random_uuid(),
   kategori     kategori_item not null,
   kode_item    text,                 -- kode cat/material (kalau ada, ex: K-380-041)
   nama_item    text not null,        -- ex: 'CLEAR HS J', 'THIN - MED'
+  satuan       satuan_item not null default 'gram',  -- 'gram' default; 'pcs' khusus dempul/putty (dikonfirmasi user)
   harga_satuan numeric not null default 0,
   aktif        boolean not null default true,
   updated_at   timestamptz not null default now(),
   unique (kategori, nama_item)
 );
+-- Catatan: satuan HANYA untuk tampilan (label di UI, ex: "35 gram" / "1 pcs").
+-- Tidak ada konversi apapun di belakangnya -- quantity disimpan & dihitung apa adanya.
 
 -- ---------------------------------------------------------------------
 -- 4. TRANSAKSI PEMAKAIAN (ex-sheet "Rekap Mixing Kansai" & "Rekap Mixing Sikkens")

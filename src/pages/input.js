@@ -18,10 +18,13 @@ export default function InputPage() {
   const [qty, setQty] = useState('');
   const [loading, setLoading] = useState(false);
   const [errMsg, setErrMsg] = useState('');
+  const [showManualWo, setShowManualWo] = useState(false);
+  const [manualWo, setManualWo] = useState({ no_pol: '', tipe_kendaraan: '', warna: '', grup: '' });
 
   // Ambil / arsipkan data WO dari master saat No WO diketik lalu di-blur/enter
   async function handleCariWo() {
     setErrMsg('');
+    setShowManualWo(false);
     if (!noWo) return;
 
     // 1) cek apakah wo_master sudah ada (arsip lokal)
@@ -32,13 +35,10 @@ export default function InputPage() {
       .maybeSingle();
 
     if (!existing) {
-      // TODO: di sini panggil fungsi/endpoint yang menarik data dari sheet CR
-      // (lewat Google Sheets API) lalu insert ke wo_master sebagai arsip.
-      // Untuk skeleton ini, tampilkan pesan supaya user tahu WO belum ada di arsip.
-      setErrMsg(
-        `No WO ${noWo} belum ada di arsip lokal. Perlu diisi manual dulu atau ` +
-        `disinkronkan dari CR (lihat fungsi syncWoFromCR di lib/syncCr.js).`
-      );
+      // Sinkron otomatis dari sheet CR belum dibangun (menyusul).
+      // Sementara: tampilkan form manual singkat supaya sistem tetap bisa dipakai dari sekarang.
+      setErrMsg(`No WO ${noWo} belum ada di arsip. Isi data kendaraan singkat di bawah untuk mulai input.`);
+      setShowManualWo(true);
     }
     setWoInfo(existing);
 
@@ -49,6 +49,22 @@ export default function InputPage() {
       .eq('no_wo', noWo)
       .order('input_at', { ascending: true });
     setRiwayat(hist || []);
+  }
+
+  async function handleSimpanWoManual() {
+    const periode = new Date().toISOString().slice(0, 7); // 'YYYY-MM'
+    const { data, error } = await supabase
+      .from('wo_master')
+      .insert({ no_wo: noWo, ...manualWo, periode_snapshot: periode })
+      .select()
+      .maybeSingle();
+    if (!error) {
+      setWoInfo(data);
+      setShowManualWo(false);
+      setErrMsg('');
+    } else {
+      setErrMsg('Gagal simpan data WO: ' + error.message);
+    }
   }
 
   // Realtime: begitu ada input baru untuk No WO yang sedang dibuka, list otomatis update
@@ -120,6 +136,26 @@ export default function InputPage() {
       )}
 
       {errMsg && <p style={{ color: 'crimson' }}>{errMsg}</p>}
+
+      {showManualWo && (
+        <div style={{ border: '1px dashed #999', padding: 12, marginBottom: 16 }}>
+          <b>Isi data kendaraan (sementara manual, sebelum sinkron CR otomatis dibuat):</b>
+          <div style={{ display: 'flex', gap: 8, marginTop: 8, flexWrap: 'wrap' }}>
+            <input placeholder="No Pol" value={manualWo.no_pol}
+              onChange={(e) => setManualWo({ ...manualWo, no_pol: e.target.value })} />
+            <input placeholder="Tipe Kendaraan" value={manualWo.tipe_kendaraan}
+              onChange={(e) => setManualWo({ ...manualWo, tipe_kendaraan: e.target.value })} />
+            <input placeholder="Warna" value={manualWo.warna}
+              onChange={(e) => setManualWo({ ...manualWo, warna: e.target.value })} />
+            <select value={manualWo.grup} onChange={(e) => setManualWo({ ...manualWo, grup: e.target.value })}>
+              <option value="">Grup</option>
+              <option value="A">A</option>
+              <option value="B">B</option>
+            </select>
+            <button onClick={handleSimpanWoManual}>Simpan & Lanjut</button>
+          </div>
+        </div>
+      )}
 
       <h3>Riwayat item untuk WO ini</h3>
       <table width="100%" border="1" cellPadding="4" style={{ borderCollapse: 'collapse', marginBottom: 16 }}>
